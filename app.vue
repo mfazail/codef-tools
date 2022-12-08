@@ -13,7 +13,6 @@
 		<Meta name="msapplication-tap-highlight" content="no" />
 		<Meta name="theme-color" content="#6366f1" />
 
-		<Link rel="manifest" href="/manifest.json" />
 		<Link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<Link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon.png" />
 		<Link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -23,7 +22,10 @@
 		<Link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 		<Link rel="mask-icon" href="/icons/72.png" color="#6366f1" />
 		<Link rel="shortcut icon" href="/favicon.ico" />
-		<InstallBanner />
+		<Script async crossorigin="anonymous"
+			src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9624538133715401">
+		</Script>
+		<!-- <InstallBanner /> -->
 		<AppHeader />
 		<main class="min-h-[500px] px-4 sm:px-2 max-w-4xl mx-auto">
 			<NuxtPage />

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useAxios } from "@vueuse/integrations/useAxios";
 import { Icon } from "@iconify/vue";
 import { useGtag } from "vue-gtag-next";
 import { ref } from "vue";
@@ -62,16 +61,16 @@ const {
     refresh: refreshSearch,
     pending: pendingSearch,
 } = await useAsyncData("search-quotes", () => {
-    if (!_searched.value) return null;
-    switch (searchType.value) {
-        case "author":
-            return $fetch(`${_searchUrl}?author=${authorIn.value}`);
-        case "tags":
-            return $fetch(`${_searchUrl}?tags=${categoryIn.value}`);
-        default:
-            console.log("something wrong happend");
-            break;
-    }
+	if (!_searched.value) return null;
+	switch (searchType.value) {
+		case "author":
+			return $fetch(`${_searchUrl}?author=${authorIn.value}`);
+		case "tags":
+			return $fetch(`${_searchUrl}?tags=${categoryIn.value}`);
+		default:
+			console.log("something wrong happend");
+			return null;
+	}
 });
 
 const generateRandom = async () => {
@@ -142,11 +141,11 @@ onBeforeUnmount(() => {
             property="og:image"
             content="https://tools.codef.site/icons/512.png"
         />
-		<Script
+		<!-- <Script
             async
             crossorigin="anonymous"
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9624538133715401"
-        ></Script>
+        ></Script> -->
 		
         <AdsByGoogle ad-client="ca-pub-9624538133715401" ad-slot="9011612592" />
 

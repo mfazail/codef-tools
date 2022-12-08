@@ -40,3 +40,4 @@ npm run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+@ckpack/vue-color @headlessui/vue @iconify/vue @nuxtjs/color-mode @nuxtjs/tailwindcss @tailwindcss/aspect-ratio @tailwindcss/typography @vueuse/core @vueuse/integrations @vueuse/nuxt axios nuxt-schema-org qrcode.vue sitemap typescript vue-gtag-next

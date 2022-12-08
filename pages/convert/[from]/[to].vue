@@ -24,7 +24,7 @@ isValid = computed(() =>
             <InDev />
         </div>
         <div>
-            <div v-if="!isValid.isSupported">
+            <div v-if="!isValid!.isSupported">
                 <p>
                     Converting form {{ convertFrom }} to {{ convertTo }} is Not
                     supported yet.

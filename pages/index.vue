@@ -48,11 +48,11 @@ useSchemaOrg([
             property="og:image"
             content="https://tools.codef.site/icons/512.png"
         />
-		<Script
+		<!-- <Script
             async
             crossorigin="anonymous"
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9624538133715401"
-        ></Script>
+        ></Script> -->
 
 		<AdsByGoogle ad-client="ca-pub-9624538133715401" ad-slot="9011612592" />
 
