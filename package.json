@@ -28,6 +28,7 @@
 		"vue-gtag-next": "^1.14.0"
 	},
 	"dependencies": {
-		"html5-qrcode": "^2.3.4"
+		"html5-qrcode": "^2.3.4",
+		"nprogress": "^0.2.0"
 	}
 }
