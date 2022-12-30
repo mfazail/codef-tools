@@ -119,7 +119,7 @@ const handleMode = () => {
 </script>
 
 <template>
-	<div class="flex w-full h-screen bg-white dark:bg-slate-800">
+	<div class="flex flex-col md:flex-row w-full h-screen bg-white dark:bg-slate-800">
 		<div class="w-full h-full p-4 flex-1">
 			<div class="flex space-x-3 justify-around items-center pb-4">
 				<NSelect filterable v-model:value="language" :options="langs" />
