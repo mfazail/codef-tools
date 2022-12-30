@@ -104,7 +104,7 @@ useSchemaOrg([
 </script>
 
 <template>
-    <div class="w-full">
+    <div class="w-full max-w-4xl mx-auto">
         <AdsByGoogle ad-client="ca-pub-9624538133715401" ad-slot="9011612592" />
 
         <div class="mt-5 flex flex-col justify-center items-center w-full">

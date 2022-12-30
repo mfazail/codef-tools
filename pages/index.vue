@@ -29,7 +29,7 @@ useSchemaOrg([
 </script>
 
 <template>
-    <div>
+    <div class="max-w-4xl mx-auto">
 		<Meta name="twitter:card" content="summary" />
         <Meta name="twitter:url" content="https://tools.codef.site" />
         <Meta name="twitter:title" content="CodeF Tools" />
@@ -77,6 +77,13 @@ useSchemaOrg([
                 icon="bi:chat-quote-fill"
                 url="random-quotes"
                 description="Read random quotes or find quotes from different authors, category,etc."
+            />
+            <tool-card
+                title="Highlight code"
+                iconClass=""
+                icon="ph:code-bold"
+                url="code-highlight"
+                description="Highlight code and generate images with nice vs code themes or copy the highlighted html."
             />
         </div>
 		<!-- <NuxtLink to="/convert/binary/decimal">Test</NuxtLink> -->

@@ -71,7 +71,7 @@ const download = () => {
 </script>
 
 <template>
-    <div class="mt-5">
+    <div class="mt-5 max-w-4xl mx-auto">
         <Meta name="twitter:card" content="summary" />
         <Meta
             name="twitter:url"

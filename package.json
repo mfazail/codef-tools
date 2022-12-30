@@ -28,7 +28,10 @@
 		"vue-gtag-next": "^1.14.0"
 	},
 	"dependencies": {
+		"html-to-image": "^1.11.3",
 		"html5-qrcode": "^2.3.4",
-		"nprogress": "^0.2.0"
+		"naive-ui": "^2.34.3",
+		"nprogress": "^0.2.0",
+		"shiki-es": "^0.1.2"
 	}
 }

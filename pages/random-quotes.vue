@@ -110,7 +110,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div>
+    <div class="max-w-4xl mx-auto">
         <Meta name="twitter:card" content="summary" />
         <Meta
             name="twitter:url"
