@@ -25,12 +25,25 @@ export default defineNuxtConfig({
 		GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID,
 	},
 	build: {
-		transpile: ["@headlessui/vue"],
+		transpile: process.env.NODE_ENV === 'production'
+			? [
+				'naive-ui',
+				'vueuc',
+				'@css-render/vue3-ssr',
+				'@juggle/resize-observer'
+			]
+			: ['@juggle/resize-observer','@headlessui/vue'],
 		analyze: true,
 	},
 	vite: {
 		build: {
 			chunkSizeWarningLimit: 1000,
 		},
+		optimizeDeps: {
+			include:
+				process.env.NODE_ENV === 'development'
+					? ['naive-ui', 'vueuc', 'date-fns-tz/esm/formatInTimeZone']
+					: []
+		}
 	},
 });

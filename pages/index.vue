@@ -78,6 +78,13 @@ useSchemaOrg([
                 url="random-quotes"
                 description="Read random quotes or find quotes from different authors, category,etc."
             />
+            <tool-card
+                title="Highlight codes"
+                iconClass=""
+                icon="carbon:code"
+                url="code-highlight"
+                description="Highlight code and download it as images."
+            />
         </div>
 		<!-- <NuxtLink to="/convert/binary/decimal">Test</NuxtLink> -->
     </div>
