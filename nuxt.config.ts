@@ -6,6 +6,9 @@ export default defineNuxtConfig({
 		"@vueuse/nuxt",
 		"nuxt-schema-org",
 	],
+	ignore: [
+		"pages/convert/*.vue"
+	],
 	schemaOrg: {
 		// set to your production domain
 		canonicalHost: "https://tools.codef.site",

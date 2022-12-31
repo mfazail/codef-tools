@@ -1,20 +1,25 @@
 <template>
-	<NConfigProvider inlineThemeDisabled :themeOverrides="colorMode.value == 'dark' ? darkThemeOverrides:lightThemeOverrides" :theme="colorMode.value=='dark'? darkTheme:lightTheme">
+	<NConfigProvider inlineThemeDisabled
+		:themeOverrides="colorMode.value == 'dark' ? darkThemeOverrides : lightThemeOverrides"
+		:theme="colorMode.value == 'dark' ? darkTheme : lightTheme">
 		<NDialogProvider to="#dialog-portal">
-			<div class="bg-white dark:bg-slate-800">
-				<AppHeader />
-				<main class="min-h-[500px] px-4 sm:px-2 mx-auto">
-					<NuxtPage />
-				</main>
-				<Footer />
-			</div>
+			<NMessageProvider to="#message-portal">
+				<div class="bg-white dark:bg-slate-800">
+					<AppHeader />
+					<main class="min-h-[500px] px-4 sm:px-2 mx-auto">
+						<NuxtPage />
+					</main>
+					<Footer />
+				</div>
+			</NMessageProvider>
 		</NDialogProvider>
 		<div id="dialog-portal" />
+		<div id="message-portal" />
 	</NConfigProvider>
 </template>
 
 <script setup lang="ts">
-import { NConfigProvider, NDialogProvider, darkTheme, lightTheme, type GlobalThemeOverrides } from 'naive-ui'
+import { NConfigProvider, NDialogProvider, NMessageProvider, darkTheme, lightTheme, type GlobalThemeOverrides } from 'naive-ui'
 // https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9624538133715401
 const appName = "CodeF Tools"
 const colorMode = useColorMode()
@@ -126,15 +131,15 @@ useHead({
 			href: "/favicon.ico"
 		},
 	],
-	script: [
-		{
-			async: true,
-			crossorigin:'anonymous',
-			src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9624538133715401',
-		}
-	]
+	// script: [
+	// 	{
+	// 		async: true,
+	// 		crossorigin:'anonymous',
+	// 		src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9624538133715401',
+	// 	}
+	// ]
 })
-onMounted(() => {	
+onMounted(() => {
 	const meta = document.createElement('meta')
 	meta.name = 'naive-ui-style'
 	document.head.appendChild(meta)
