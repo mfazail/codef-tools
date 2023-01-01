@@ -2,8 +2,7 @@
 import { Icon } from "@iconify/vue";
 import { useGtag } from "vue-gtag-next";
 import { ref } from "vue";
-import { getMeta } from "~~/utils/metaProperties";
-import { NButton, NInput, NSelect } from "naive-ui";
+import { NButton, NInput, NSelect, NSpin, useMessage } from "naive-ui";
 
 const pageMeta = {
 	base: "/random-quotes",
@@ -46,15 +45,16 @@ const _searchUrl = "https://quotable.io/quotes";
 const config = useRuntimeConfig();
 const { event } = useGtag();
 const { copy, copied } = useClipboard();
+const message = useMessage()
 
 const options = [
 	{
 		label: "Author",
-		value:"author"
+		value: "author"
 	},
 	{
 		label: "Tags",
-		value:"tags"
+		value: "tags"
 	},
 ]
 
@@ -118,6 +118,15 @@ const search = async () => {
 	}
 };
 
+const handleCopy = async () => {
+	await copy((dataRandom.value as Quote).content)
+	if (copied.value) {
+		message.success("Copied")
+	} else {
+		message.error("Something went wrong")
+	}
+}
+
 onBeforeUnmount(() => {
 	dataRandom.value = null;
 	dataSearch.value = null;
@@ -149,8 +158,10 @@ onBeforeUnmount(() => {
 				<NButton @click="generateRandom" type="primary">
 					Random
 				</NButton>
-				<NButton @click="copy((dataRandom as Quote).content)" quaternary>
-					{{ copied ? "Copied" : "Copy" }}
+				<NButton @click="handleCopy" circle>
+					<template #icon>
+						<Icon :icon="copied ? 'ic:baseline-check' : 'material-symbols:content-copy-outline'" />
+					</template>
 				</NButton>
 			</div>
 
@@ -158,22 +169,24 @@ onBeforeUnmount(() => {
 				<label for="searchType" class="block text-sm font-medium text-gray-700 dark:text-white mt-10">
 					Search By
 				</label>
-				<NSelect v-model:value="searchType" :options="options" />
 			</div>
-			<NInput v-if="searchType == 'author'" type="text" v-model="authorIn" placeholder="Author Name"
-				class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pr-12 sm:text-sm border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-800 dark:text-white" />
-			<NInput v-if="searchType == 'tags'" type="text" v-model="categoryIn"
-				placeholder="Category eg. love|happiness|science"
-				class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pr-12 sm:text-sm border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-800 dark:text-white" />
+			<div class="flex items-center md:space-x-4 flex-col md:flex-row">
+				<NSelect v-model:value="searchType" :options="options" />
+				<NInput v-if="searchType == 'author'" type="text" v-model:value="authorIn" placeholder="Author Name" />
+				<NInput v-if="searchType == 'tags'" type="text" v-model:value="categoryIn"
+					placeholder="Category eg. love|happiness|science" />
+			</div>
 			<div class="flex justify-end">
-				<NButton @click="search"
-					class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+				<NButton @click="search" type="primary">
+					<template #icon>
+						<Icon icon="ri:search-2-line" />
+					</template>
 					Search
 				</NButton>
 			</div>
 
 			<div v-if="_searched && pendingSearch" class="flex justify-center items-center">
-				<Icon icon="lucide:loader-2" class="w-5 h-5 animate-spin text-indigo-500" />
+				<NSpin />
 			</div>
 			<div v-if="dataSearch != null && ((dataSearch as any).results as Array<Quote>).length != 0">
 				<ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700 w-full">
@@ -196,7 +209,7 @@ onBeforeUnmount(() => {
 							</div>
 						</div>
 						<div>
-							<Icon @click="copy((quote as Quote).content)" icon="fluent:copy-16-filled"
+							<Icon @click="copy((quote as Quote).content)" icon="material-symbols:content-copy-outline"
 								class="w-5 h-5 text-indigo-500 cursor-pointer" />
 						</div>
 					</li>

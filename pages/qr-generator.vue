@@ -4,7 +4,6 @@ import QrcodeVue from "qrcode.vue";
 import { useGtag } from "vue-gtag-next";
 import { Icon } from "@iconify/vue";
 import { NButton, NInput, NInputGroup, NPopover, NSelect } from "naive-ui";
-import { getMeta } from "~~/utils/metaProperties";
 
 const pageMeta = {
 	base: "/qr-generator",
@@ -82,9 +81,7 @@ const download = () => {
 
 <template>
 	<div class="mt-5 max-w-4xl mx-auto">
-		<ClientOnly>
-			<AdsByGoogle ad-client="ca-pub-9624538133715401" ad-slot="9011612592" />
-		</ClientOnly>
+		<AdsByGoogle ad-client="ca-pub-9624538133715401" ad-slot="9011612592" />
 
 		<a ref="aref" class="hidden"></a>
 		<div class="flex items-center justify-center">
@@ -100,55 +97,49 @@ const download = () => {
 				<NInput type="textarea" v-model="message" id="message" rows="4" placeholder="Place your text here" />
 			</div>
 		</div>
-		<div class="mt-4">
-			<label for="size" class="block text-sm font-medium text-gray-700 dark:text-white">Size</label>
-			<NInputGroup>
-				<NInput type="text" v-model:value="size" id="size" placeholder="0.00" />
-				<NSelect v-model:value="level" style="width:20%" :options="levelOptions" />
-			</NInputGroup>
-		</div>
-		<div class="w-full flex flex-col sm:flex-row justify-between items-center sm:space-x-4">
-			<div class="mt-4 w-full relative">
-				<div>
-					<h1 class="block text-sm font-medium text-gray-700 dark:text-white pb-2">
-						Background Color
-					</h1>
-				</div>
-				<NPopover to="#dialog-portal" raw trigger="click" display-directive="if">
+		<div class="mt-4 w-full grid grid-cols-1 sm:grid-cols-6 place-items-center gap-3">
+			<div class="sm:col-span-2 xl:col-span-2">
+				<label for="size" class="block text-sm font-medium text-gray-700 dark:text-white">Size</label>
+				<NInputGroup>
+					<NInput type="text" v-model:value="size" id="size" placeholder="0.00" />
+					<NSelect v-model:value="level" style="width:20%" :options="levelOptions" />
+				</NInputGroup>
+			</div>
+			<div class="sm:col-span-2 xl:col-span-2">
+				<label for="margin" class="block text-sm font-medium text-gray-700 dark:text-white">
+					Margin
+				</label>
+				<NInput v-model:value="margin" id="margin" type="text" />
+			</div>
+			<div class="sm:col-span-1">
+				<span class="block text-sm font-medium text-gray-700 dark:text-white">
+					Background Color
+				</span>
+				<NPopover to="#dialog-portal" raw trigger="click" display-directive="if" placement="right-end" class="rounded-xl">
 					<template #trigger>
-						<div class="flex items-center space-x-2 p-2 border dark:border-slate-700 max-w-min rounded-md">
-							<div class="h-8 w-12 cursor-pointer rounded-md shadow-sm"
-								:style="{ background: background }"></div>
+						<div
+							class="flex items-center cursor-pointer space-x-2 p-2 border dark:border-slate-700 max-w-min rounded-md">
+							<div class="h-8 w-12 rounded-md shadow-sm" :style="{ background: background }"></div>
 							<Icon icon="heroicons:chevron-down" class="w-5 dark:text-white" />
 						</div>
 					</template>
 					<ColorPicker v-model="background" />
 				</NPopover>
 			</div>
-			<div class="mt-4 w-full relative">
-				<div>
-					<h1 class="block text-sm font-medium text-gray-700 dark:text-white pb-2">
-						Foreground Color
-					</h1>
-				</div>
-				<NPopover to="#dialog-portal" raw trigger="click" display-directive="if">
+			<div class="sm:col-span-1">
+				<span class="block text-sm font-medium text-gray-700 dark:text-white">
+					Foreground Color
+				</span>
+				<NPopover to="#dialog-portal" raw trigger="click" display-directive="if" placement="right-end" class="rounded-xl">
 					<template #trigger>
-						<div class="flex items-center space-x-2 p-2 border dark:border-slate-700 max-w-min rounded-md">
-							<div class="h-8 w-12 cursor-pointer rounded-md shadow-sm"
-								:style="{ background: foreground }"></div>
+						<div
+							class="flex items-center cursor-pointer space-x-2 p-2 border dark:border-slate-700 max-w-min rounded-md">
+							<div class="h-8 w-12 rounded-md shadow-sm" :style="{ background: foreground }"></div>
 							<Icon icon="heroicons:chevron-down" class="w-5 dark:text-white" />
 						</div>
 					</template>
 					<ColorPicker v-model="foreground" />
 				</NPopover>
-			</div>
-			<div class="mt-4 w-full">
-				<label for="margin" class="block text-sm font-medium text-gray-700 dark:text-white pb-2">
-					Margin
-				</label>
-				<div class="mt-1">
-					<NInput v-model:value="margin" id="margin" type="text" />
-				</div>
 			</div>
 		</div>
 		<div class="flex justify-end mt-6">

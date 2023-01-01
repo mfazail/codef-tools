@@ -14,11 +14,11 @@ specifiers:
   '@vueuse/nuxt': ^9.6.0
   axios: ^1.2.1
   html-to-image: ^1.11.3
-  html5-qrcode: ^2.3.4
   naive-ui: ^2.34.3
   nprogress: ^0.2.0
   nuxt: 3.0.0
   nuxt-schema-org: ^2.0.0
+  qr-scanner: ^1.4.2
   qrcode.vue: ^3.3.3
   shiki-es: ^0.1.2
   sitemap: ^7.1.1
@@ -28,9 +28,9 @@ specifiers:
 
 dependencies:
   html-to-image: 1.11.3
-  html5-qrcode: 2.3.4
   naive-ui: 2.34.3
   nprogress: 0.2.0
+  qr-scanner: 1.4.2
   shiki-es: 0.1.2
   vanilla-colorful: 0.7.2
 
@@ -992,6 +992,10 @@ packages:
   /@types/node/18.11.18:
     resolution: {integrity: sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==}
     dev: true
+
+  /@types/offscreencanvas/2019.7.0:
+    resolution: {integrity: sha512-PGcyveRIpL1XIqK8eBsmRBt76eFgtzuPiSTyKHZxnGemp2yzGzWpjYKAfK3wIMiU7eH+851yEpiuP8JZerTmWg==}
+    dev: false
 
   /@types/parse-json/4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
@@ -2972,10 +2976,6 @@ packages:
     resolution: {integrity: sha512-9E/uinAx0LrfGndny36FDh3j3shpp0vn/J1UFvpYZm/y6n8CjWJ+h6jyU1VzmOKAx/Fy/NPGath7nmRMpaocmg==}
     dev: false
 
-  /html5-qrcode/2.3.4:
-    resolution: {integrity: sha512-VPZrOTG8XR9HmIAhSSiGtJVPErZxKy/DuGc9cPQLburCWZEbvxQGJP9y4K4P+8vdalLtYB/vM5YP1BdWQKZ8jQ==}
-    dev: false
-
   /http-assert/1.5.0:
     resolution: {integrity: sha512-uPpH7OKX4H25hBmU6G1jWNaqJGpTXxey+YOUizJUAgu0AjLUeC8D73hTrhvDS5D+GJN1DN1+hhc/eF/wpxtp0w==}
     engines: {node: '>= 0.8'}
@@ -4745,6 +4745,12 @@ packages:
     resolution: {integrity: sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==}
     engines: {node: '>=6'}
     dev: true
+
+  /qr-scanner/1.4.2:
+    resolution: {integrity: sha512-kV1yQUe2FENvn59tMZW6mOVfpq9mGxGf8l6+EGaXUOd4RBOLg7tRC83OrirM5AtDvZRpdjdlXURsHreAOSPOUw==}
+    dependencies:
+      '@types/offscreencanvas': 2019.7.0
+    dev: false
 
   /qrcode.vue/3.3.3:
     resolution: {integrity: sha512-OsD4tQjIbxg/K6D5ZkWjBdYI9eg9K2i8qeYILdEAX5mdAydSAxV7xKmmZSP/hA12olLqEMZ9ryqDQrwa9jEMgw==}

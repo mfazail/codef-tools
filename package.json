@@ -29,9 +29,9 @@
 	},
 	"dependencies": {
 		"html-to-image": "^1.11.3",
-		"html5-qrcode": "^2.3.4",
 		"naive-ui": "^2.34.3",
 		"nprogress": "^0.2.0",
+		"qr-scanner": "^1.4.2",
 		"shiki-es": "^0.1.2",
 		"vanilla-colorful": "^0.7.2"
 	}

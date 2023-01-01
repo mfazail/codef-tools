@@ -1,24 +1,40 @@
 <script setup lang="ts">
-import { computed, h, nextTick, onMounted, ref, watch,type VNodeRef } from 'vue';
-import { NInput, NSelect, NButton, useDialog,useMessage } from 'naive-ui'
+import { computed, h, nextTick, onMounted, ref, watch, type VNodeRef } from 'vue';
+import { NInput, NSelect, NButton, useDialog, useMessage, NTooltip, NDropdown } from 'naive-ui'
 import { getHighlighter, BUNDLED_LANGUAGES, BUNDLED_THEMES } from 'shiki-es'
 import type { Highlighter, Lang } from 'shiki-es'
 import { Icon } from '@iconify/vue'
-import { toPng } from 'html-to-image'
+import { toPng, toJpeg } from 'html-to-image'
 import { useElementSize } from '@vueuse/core'
 import { useGtag } from "vue-gtag-next";
 
 let hl: Highlighter;
-const mode = ref(false)
 const language = ref<Lang>("javascript")
 const theme = ref("github-dark")
 const code = ref("console.log('Hello World')")
 const renderedHtml = ref<string | null>(null);
 const dialog = useDialog()
 const message = useMessage()
-const { event,pageview } = useGtag();
+const { event, pageview } = useGtag();
 const config = useRuntimeConfig();
 const el = ref<HTMLElement | null>()
+const color = ref({
+	bg: "#000",
+	fg: "#ffffff"
+})
+
+const downloadOptions = [
+	{
+		label: 'To Png',
+		key: 'png',
+		icon: () => h(Icon, { icon:'ph:file-png',class:'w-5 h-5'})
+	},
+	{
+		label: "To Jpg",
+		key: "jpg",
+		icon: () => h(Icon, { icon: 'ph:file-jpg', class: 'w-5 h-5' })
+	},
+]
 
 const fileName = ref("index.js")
 
@@ -37,9 +53,11 @@ watch(theme, async (v) => {
 		await nextTick(() => {
 			return hl.loadTheme(v)
 		})
+		color.value.bg = hl.getBackgroundColor(theme.value)
+		color.value.fg = hl.getForegroundColor(theme.value)
 		renderedHtml.value = reRender.value
 	} catch (e) {
-		console.log({e})
+		console.log({ e })
 	}
 })
 
@@ -57,10 +75,9 @@ watch(language, async (v) => {
 		console.log("lang loaded")
 		renderedHtml.value = reRender.value
 	} catch (e) {
-		console.log({e})
+		console.log({ e })
 	}
 })
-
 watch(code, () => {
 	renderedHtml.value = reRender.value
 })
@@ -92,9 +109,11 @@ onMounted(async () => {
 		pageview({
 			page_title: "Code Highlight",
 			page_location: "https://tools.codef.site/code-highlight",
-			page_path:"/code-highlight"
+			page_path: "/code-highlight"
 		})
 	}
+	color.value.bg = hl.getBackgroundColor(theme.value)
+	color.value.fg = hl.getForegroundColor(theme.value)
 })
 
 const downlaodToPng = async () => {
@@ -105,7 +124,7 @@ const downlaodToPng = async () => {
 		skipAutoScale: true,
 		quality: 1,
 		canvasWidth: width.value,
-		canvasHeight:height.value,
+		canvasHeight: height.value,
 		width: width.value,
 		height: height.value,
 	}).then((v) => {
@@ -119,7 +138,7 @@ const downlaodToPng = async () => {
 				event_label: "Code Highlight downloaded",
 			});
 		}
-	}).catch((e)=>{
+	}).catch((e) => {
 		if (!config.public.DEV) {
 			event("code-highlight-download", {
 				event_category: "code-highlight",
@@ -127,7 +146,46 @@ const downlaodToPng = async () => {
 				description: `${e}`
 			});
 		}
-	}).finally(()=>{
+	}).finally(() => {
+		if (!config.public.DEV) {
+			event("code-highlight-download", {
+				event_category: "code-highlight",
+				event_label: "Code highlight download triggered",
+			});
+		}
+	})
+}
+const downlaodToJpg = async () => {
+	const div = document.getElementById('wrapper')
+	const { width, height } = useElementSize(div)
+	toJpeg(div!, {
+		pixelRatio: 1,
+		skipAutoScale: true,
+		quality: 1,
+		canvasWidth: width.value,
+		canvasHeight: height.value,
+		width: width.value,
+		height: height.value,
+	}).then((v) => {
+		const a = document.createElement('a')
+		a.download = `${language.value}_${theme.value}_codef.png`
+		a.href = v
+		a.click()
+		if (!config.public.DEV) {
+			event("code-highlight-download", {
+				event_category: "code-highlight",
+				event_label: "Code Highlight downloaded",
+			});
+		}
+	}).catch((e) => {
+		if (!config.public.DEV) {
+			event("code-highlight-download", {
+				event_category: "code-highlight",
+				event_label: "Code highlight download failed",
+				description: `${e}`
+			});
+		}
+	}).finally(() => {
 		if (!config.public.DEV) {
 			event("code-highlight-download", {
 				event_category: "code-highlight",
@@ -143,7 +201,7 @@ const copyCode = () => {
 const handleName = () => {
 	let oldName = fileName.value;
 	const inputRef = ref<VNodeRef | null>(null)
-	const inputNode = ()=> h(NInput, {
+	const inputNode = () => h(NInput, {
 		value: fileName.value,
 		type: 'text',
 		"onUpdate:value": (v) => fileName.value = v,
@@ -151,7 +209,7 @@ const handleName = () => {
 			if (e.code == 'Enter') {
 				if (fileName.value == oldName) {
 					message.info("Nothing changed")
-				} else {	
+				} else {
 					message.success("Renamed")
 				}
 				d.destroy()
@@ -173,22 +231,26 @@ const handleName = () => {
 		},
 		content: inputNode,
 		positiveText: "Done",
-		onPositiveClick: () => {},
+		onPositiveClick: () => { 
+			if (fileName.value == oldName) {
+				message.info("Nothing changed")
+			} else {
+				message.success("Renamed")
+			}
+		},
 		negativeText: "Cancel",
-		onNegativeClick:revertName,
+		onNegativeClick: revertName,
 		onEsc: revertName,
 		onClose: revertName,
-		maskClosable:false,
+		maskClosable: false,
 	})
 }
-const handleMode = () => {
-	if (!el.value) return
-	if (el.value!.classList.contains('dark')) {
-		el.value!.classList.remove('dark')
-		mode.value = false;
-	} else {
-		el.value!.classList.add('dark')
-		mode.value = true
+
+const download = (key: string) => {
+	if (key == 'png') {
+		downlaodToPng()
+	} else if (key == 'jpg') {
+		downlaodToJpg()
 	}
 }
 </script>
@@ -196,50 +258,43 @@ const handleMode = () => {
 <template>
 	<div class="flex flex-col-reverse lg:flex-row justify-end w-full min-h-screen bg-white dark:bg-slate-800">
 		<div class="w-full h-full p-4 lg:flex-1">
-			<div class="flex space-x-3 justify-around items-center pb-4">
-				<NSelect filterable v-model:value="language" :options="langs" />
-				<NSelect filterable v-model:value="theme" :options="themes" />
-			</div>
 			<NInput v-model:value="code" type="textarea" placeholder="Paste your code here..."
 				class="lg:h-[calc(100vh-80px)]" rows="12" />
 		</div>
 		<div ref="el" class="flex flex-col items-center justify-start lg:flex-1 p-4">
-			<div class="flex w-full items-center justify-end space-x-2 pb-4">
-
-				<NButton @click="copyCode" quaternary>
-					<Icon icon="material-symbols:content-copy" class="w-5 h-5" />
-				</NButton>
-				<NButton @click="handleMode" quaternary>
-					<Icon icon="heroicons:sun" class="w-5 h-5" />
-				</NButton>
-				<NButton @click="downlaodToPng" type="primary">Download
-				</NButton>
+			<div class="flex flex-wrap w-full items-center justify-end gap-3 pb-4">
+				<div class="flex space-x-3 justify-around items-center">
+					<NSelect filterable v-model:value="language" :options="langs" />
+					<NSelect filterable v-model:value="theme" :options="themes" />
+				</div>
+				<NTooltip placement="bottom-end" to="#popover-portal" display-directive="if">
+					<template #trigger>
+						<NButton @click="copyCode" quaternary>
+							<Icon icon="material-symbols:content-copy" class="w-5 h-5" />
+						</NButton>
+					</template>
+					Copy highlighted raw html
+				</NTooltip>
+				<NDropdown to="#popover-portal" size="large" :options="downloadOptions" @select="download">
+					<NButton type="primary">Download
+					</NButton>
+				</NDropdown>
 			</div>
 
-			<div id="wrapper" class="w-full h-auto bg-gray-200 dark:bg-gray-900 shadow-md rounded-lg">
-				<div class="flex w-full justify-between items-center p-3 mb-3 border-b border-slate-800">
+			<div id="wrapper" class="w-full h-auto shadow-md rounded-lg" :style="{ background: color.bg }">
+				<div class="flex w-full justify-between items-center p-3 mb-3">
 					<div class="flex space-x-2">
 						<span class="block w-4 h-4 rounded-full bg-red-500" />
 						<span class="block w-4 h-4 rounded-full bg-yellow-400" />
 						<span class="block w-4 h-4 rounded-full bg-green-500" />
 					</div>
-					<span @click="handleName" class="cursor-pointer dark:text-white font-semibold">
+					<span @click="handleName" class="cursor-pointer font-semibold" :style="{ color: color.fg }">
 						{{ fileName }}
 					</span>
-					<span class="w-16"/>
+					<span class="w-16" />
 				</div>
-				<div v-if="renderedHtml" v-html="renderedHtml" class="px-3 pb-3"/>
+				<div v-if="renderedHtml" v-html="renderedHtml" class="px-3 pb-3" />
 			</div>
 		</div>
 	</div>
 </template>
-
-<style>
-.shiki {
-	@apply p-4 rounded-md
-}
-
-.shiki code {
-	@apply whitespace-pre-wrap
-}
-</style>
